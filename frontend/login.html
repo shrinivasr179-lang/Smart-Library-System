@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Intelligent Library</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #102b55, #2875c7);
+            padding: 25px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 580px;
+            display: flex;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.25);
+        }
+
+        .college-section {
+            width: 55%;
+            position: relative;
+            background: #102b55;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 35px;
+        }
+
+        .college-section img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .college-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                transparent,
+                rgba(8, 30, 65, 0.9)
+            );
+        }
+
+        .college-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .college-info h1 {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .college-info p {
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .login-section {
+            width: 45%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        /* COLLEGE LOGO */
+        .logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .logo img {
+            width: 85px;
+            height: 85px;
+            object-fit: contain;
+        }
+
+        h2 {
+            text-align: center;
+            color: #163b70;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2875c7;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1765b3;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #104b89;
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+            color: #d32f2f;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #888;
+            font-size: 12px;
+        }
+
+        @media (max-width: 750px) {
+            .login-container {
+                flex-direction: column;
+            }
+
+            .college-section {
+                width: 100%;
+                min-height: 230px;
+            }
+
+            .login-section {
+                width: 100%;
+                padding: 35px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="college-section">
+            <img src="/images/college.jpg"
+                 alt="College Building"
+                 onerror="this.style.display='none'">
+
+            <div class="college-overlay"></div>
+
+            <div class="college-info">
+                <h1>Welcome to Our College</h1>
+                <p>
+                    Intelligent Library Management System
+                    <br>
+                    Smart Learning. Easy Access. Better Education.
+                </p>
+            </div>
+        </div>
+
+        <div class="login-section">
+            <div class="login-card">
+
+                <!-- COLLEGE LOGO: ADD YOUR IMAGE HERE -->
+                <div class="logo">
+                    <img src="/images/college-logo.png"
+                         alt="College Logo"
+                         onerror="this.style.display='none'">
+                </div>
+
+                <h2>Library Admin</h2>
+
+                <p class="subtitle">
+                    Intelligent Library Management System
+                </p>
+
+                <form id="loginForm">
+
+                    <label for="email">Email Address</label>
+                    <input type="email"
+                           id="email"
+                           placeholder="Enter admin email"
+                           required>
+
+                    <label for="password">Password</label>
+                    <input type="password"
+                           id="password"
+                           placeholder="Enter your password"
+                           required>
+
+                    <button type="submit" id="loginButton">
+                        Login to Dashboard
+                    </button>
+
+                    <p id="message" role="alert"></p>
+
+                </form>
+
+                <div class="footer">
+                    © 2026 Intelligent Library Management System
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const message = document.getElementById("message");
+        const loginButton = document.getElementById("loginButton");
+
+        loginForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            message.textContent = "";
+            loginButton.disabled = true;
+            loginButton.textContent = "Please wait...";
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch("/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = "/";
+                } else {
+                    message.textContent = result.message;
+                }
+            } catch (error) {
+                message.textContent =
+                    "Unable to connect to the server.";
+            }
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Login to Dashboard";
+        });
+    </script>
+
+</body>
+</html>

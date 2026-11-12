@@ -1,0 +1,504 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Library Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-logo">📚</span>
+            <div>
+                <h2>CENTRAL</h2>
+                <h2>LIBRARY</h2>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#dashboard">▦ Dashboard</a>
+            <a href="#students">▦ Student Data</a>
+            <a href="#attendance">▤ Student Attendance</a>
+            <a href="#registration">▣ Registration</a>
+            <a href="#issue" class="active">▴ Issue Book</a>
+            <a href="#return">▾ Return Book</a>
+            <a href="#book-status">▤ Book Status</a>
+            <a href="#books">▤ All Books</a>
+            <a href="#reservations">📚 Book Reservations</a>
+            <a href="#calendar">▦ Calendar</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <span>‹</span>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-area">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+            <div class="topbar-title">
+                Library Management System
+            </div>
+
+            <div class="admin-profile">
+                <span id="adminName">Admin</span>
+                <div class="admin-avatar" id="adminAvatar">A</div>
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    onclick="logoutAdmin()"
+                    class="logout-button">
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <main class="page-content">
+
+            <!-- DASHBOARD -->
+            <section id="dashboard" class="content-section">
+
+                <div class="welcome">
+                    <h1>Library Dashboard</h1>
+                    <p>Manage your library activities from one place.</p>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>Total Students</h3>
+                        <p id="studentCount">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Total Books</h3>
+                        <p id="bookCount">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>System Status</h3>
+                        <p class="active">Active</p>
+                    </div>
+                </div>
+
+                <!-- DASHBOARD CHARTS -->
+                <div class="chart-grid">
+
+                    <div class="panel chart-panel">
+                        <h2>Books by Category</h2>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+
+                    <div class="panel chart-panel">
+                        <h2>Library Overview</h2>
+                        <canvas id="libraryChart"></canvas>
+                    </div>
+
+                </div>
+
+                <!-- OVERDUE BOOKS ALERT -->
+                <div class="panel overdue-panel">
+                    <h2>⚠️ Overdue Books Alert</h2>
+
+                    <p class="section-description">
+                        Books that have passed their return due date.
+                    </p>
+
+                    <div id="overdueBooksContainer">
+                        Loading overdue books...
+                    </div>
+                </div>
+
+                <!-- LOW STOCK WARNING -->
+                <div class="panel low-stock-panel">
+                    <h2>⚠️ Low Stock Warning</h2>
+
+                    <p class="section-description">
+                        Books with 2 or fewer available copies.
+                    </p>
+
+                    <div id="lowStockBooksContainer">
+                        Loading low stock books...
+                    </div>
+                </div>
+
+                <!-- BOOK RESERVATION SYSTEM -->
+                <div class="panel reservation-panel" id="reservations">
+
+                    <h2>📚 Book Reservation System</h2>
+
+                    <p class="section-description">
+                        Reserve books that are currently unavailable.
+                    </p>
+
+                    <form id="reservationForm">
+
+                        <div class="form-group">
+                            <label for="reservationStudentId">Student ID</label>
+                            <input
+                                type="number"
+                                id="reservationStudentId"
+                                placeholder="Enter Student ID"
+                                min="1"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reservationBookId">Book ID</label>
+                            <input
+                                type="number"
+                                id="reservationBookId"
+                                placeholder="Enter Book ID"
+                                min="1"
+                                required>
+                        </div>
+
+                        <button type="submit">Reserve Book</button>
+                    </form>
+
+                    <div id="reservationMessage"></div>
+
+                    <h3>Reservation Records</h3>
+
+                    <div id="reservationsContainer">
+                        Loading reservations...
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ISSUE BOOK AND STUDENT DATA -->
+            <section id="issue" class="content-section">
+
+                <div class="two-column-layout">
+
+                    <div class="panel issue-panel">
+                        <h2>Issue Book</h2>
+
+                        <form id="issueForm">
+
+                            <div class="form-group">
+                                <label for="issueStudent">Select Student</label>
+                                <select id="issueStudent" required>
+                                    <option value="">Choose Student</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="issueBook">Select Book</label>
+                                <select id="issueBook" required>
+                                    <option value="">Choose Book</option>
+                                </select>
+                            </div>
+
+                            <div class="form-note">
+                                The system automatically sets the issue
+                                date and due date when a book is issued.
+                            </div>
+
+                            <button type="submit" class="submit-button">
+                                Issue Book
+                            </button>
+
+                            <p id="issueMessage" class="message"></p>
+                        </form>
+                    </div>
+
+                    <div class="panel student-data-panel"
+                         id="student-data-card">
+
+                        <h2>Student Data</h2>
+
+                        <div id="studentsContainer">
+                            Loading students...
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- STUDENT REGISTRATION -->
+            <section id="registration" class="content-section">
+                <div class="panel">
+                    <h2>Student Registration</h2>
+
+                    <form id="studentForm" class="form-grid">
+
+                        <input type="text" id="studentName"
+                               placeholder="Student full name" required>
+
+                        <input type="email" id="studentEmail"
+                               placeholder="Student email" required>
+
+                        <input type="text" id="studentDepartment"
+                               placeholder="Department" required>
+
+                        <button type="submit">Register Student</button>
+                    </form>
+
+                    <p id="studentMessage" class="message"></p>
+                </div>
+            </section>
+
+            <!-- STUDENT DATA -->
+            <section id="students" class="content-section">
+                <div class="panel">
+                    <h2>Registered Students</h2>
+
+                    <p class="section-description">
+                        View students registered in the library.
+                    </p>
+
+                    <div id="student-list-placeholder">
+                        Student information is displayed in the
+                        Issue Book panel.
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOOK REGISTRATION -->
+            <section id="book-registration" class="content-section">
+                <div class="panel">
+                    <h2>Add New Book</h2>
+
+                    <form id="bookForm" class="form-grid">
+
+                        <input type="text" id="bookTitle"
+                               placeholder="Book title" required>
+
+                        <input type="text" id="bookAuthor"
+                               placeholder="Author name" required>
+
+                        <select id="bookCategory" required>
+                            <option value="">Select category</option>
+                        </select>
+
+                        <input type="number" id="bookCopies"
+                               min="1" value="1"
+                               placeholder="Number of copies" required>
+
+                        <button type="submit">Add Book</button>
+                    </form>
+
+                    <p id="bookMessage" class="message"></p>
+                </div>
+            </section>
+
+            <!-- ALL BOOKS -->
+            <section id="books" class="content-section">
+                <div class="panel">
+                    <h2>All Library Books</h2>
+
+                    <div class="search-box">
+                        <input type="text" id="searchInput"
+                               placeholder="Search book title">
+
+                        <button type="button"
+                                onclick="searchBooks()">Search</button>
+
+                        <button type="button" class="secondary"
+                                onclick="showAllBooks()">Show All</button>
+                    </div>
+
+                    <div id="searchResults"></div>
+
+                    <div id="booksContainer">
+                        Loading books...
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOOK STATUS -->
+            <section id="book-status" class="content-section">
+                <div class="panel">
+                    <h2>Book Status and Issue Records</h2>
+
+                    <div id="issuesContainer">
+                        Loading issue records...
+                    </div>
+                </div>
+            </section>
+
+            <!-- RETURN BOOK -->
+            <section id="return" class="content-section">
+                <div class="panel">
+                    <h2>Return Book</h2>
+
+                    <p class="section-description">
+                        Find an issued book below and select Return.
+                    </p>
+
+                    <div id="return-records">
+                        See the Return button in the Book Issue Records
+                        table under Book Status.
+                    </div>
+                </div>
+            </section>
+
+            <!-- STUDENT ATTENDANCE -->
+            <section id="attendance" class="content-section">
+
+                <div class="welcome">
+                    <h1>Student Attendance</h1>
+                    <p>Record and manage daily student attendance.</p>
+                </div>
+
+                <div class="panel">
+                    <h2>Mark Attendance</h2>
+
+                    <div class="form-group">
+                        <label for="attendanceDate">Select Date</label>
+                        <input type="date" id="attendanceDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendanceStudent">Select Student</label>
+                        <select id="attendanceStudent" required>
+                            <option value="">Select Student</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendanceStatus">Attendance Status</label>
+                        <select id="attendanceStatus">
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                            <option value="Late">Late</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendanceRemarks">Remarks</label>
+                        <input
+                            type="text"
+                            id="attendanceRemarks"
+                            placeholder="Enter remarks (optional)">
+                    </div>
+
+                    <button type="button" onclick="saveAttendance()">
+                        Save Attendance
+                    </button>
+
+                    <p id="attendanceMessage" class="message"></p>
+                </div>
+
+                <div class="panel">
+                    <h2>Attendance Records</h2>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Student Name</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="attendanceTable">
+                                <tr>
+                                    <td colspan="5">
+                                        No attendance records found.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- LIBRARY CALENDAR -->
+            <section id="calendar" class="content-section">
+
+                <div class="welcome">
+                    <h1>Library Calendar</h1>
+                    <p>Schedule and manage library events.</p>
+                </div>
+
+                <div class="panel">
+                    <h2>Add Library Event</h2>
+
+                    <form id="eventForm">
+
+                        <div class="form-group">
+                            <label for="eventTitle">Event Title</label>
+                            <input
+                                type="text"
+                                id="eventTitle"
+                                placeholder="Enter event title"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventDescription">Description</label>
+                            <textarea
+                                id="eventDescription"
+                                placeholder="Enter event description">
+                            </textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventDate">Event Date</label>
+                            <input type="date" id="eventDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventType">Event Type</label>
+                            <select id="eventType">
+                                <option value="General">General</option>
+                                <option value="Holiday">Holiday</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Competition">Competition</option>
+                                <option value="Meeting">Meeting</option>
+                            </select>
+                        </div>
+
+                        <button type="submit">Add Event</button>
+
+                    </form>
+
+                    <p id="eventMessage" class="message"></p>
+                </div>
+
+                <div class="panel">
+                    <h2>Library Events</h2>
+
+                    <div id="calendarEvents">
+                        <p>No events available.</p>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            Intelligent Library Management System |
+            Academic PBL Project
+        </footer>
+
+    </div>
+</div>
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- JAVASCRIPT -->
+<script src="script.js"></script>
+
+</body>
+</html>
